@@ -75,6 +75,7 @@ public class PantallaRegistro extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         date = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         Buscar = new javax.swing.JLabel();
@@ -96,6 +97,7 @@ public class PantallaRegistro extends javax.swing.JFrame {
         filterCB = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         jScrollPane2.setViewportView(jEditorPane1);
 
@@ -112,20 +114,27 @@ public class PantallaRegistro extends javax.swing.JFrame {
         date.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         date.setText("jLabel1");
 
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 21)); // NOI18N
+        jLabel8.setText("///////////////////////////////////////////////////////////////////////");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(720, Short.MAX_VALUE)
+                .addGap(33, 33, 33)
+                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 596, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 106, Short.MAX_VALUE)
                 .addComponent(date)
                 .addGap(173, 173, 173))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(17, Short.MAX_VALUE)
-                .addComponent(date)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(date)
+                    .addComponent(jLabel8))
                 .addContainerGap())
         );
 
@@ -217,7 +226,7 @@ public class PantallaRegistro extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 490, 150, -1));
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 490, 150, -1));
 
         jButton3.setText("ELIMINAR");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -255,6 +264,14 @@ public class PantallaRegistro extends javax.swing.JFrame {
         });
         jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 490, -1, -1));
 
+        jButton1.setText("NUEVO");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 490, -1, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -277,6 +294,7 @@ public class PantallaRegistro extends javax.swing.JFrame {
        Date v=fechaininput.getDate();
        Date u=fechaoutinput.getDate();
        Calendar cal_fechain;
+       String g = null;
        
        
        Object Dato[] = new Object [6];
@@ -299,10 +317,10 @@ public class PantallaRegistro extends javax.swing.JFrame {
                  }
                  cal_fechain = Calendar.getInstance();
                    if (u==null){
-                       SimpleDateFormat ff = new SimpleDateFormat("dd/MM/yyyy");
-                    Date fc=fechaoutinput.getDate();
-                     String ts = ff.format(fc);
-                     Dato [4]= ts;
+                    
+                    g="EN_INVENTARIO";
+             
+                 Dato[4]  = g;
                  }
                    else {
                  SimpleDateFormat ff = new SimpleDateFormat("dd/MM/yyyy");
@@ -379,6 +397,8 @@ public class PantallaRegistro extends javax.swing.JFrame {
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
         Date date;
+        Date f;
+        String k;
         int i = jTable1.getSelectedRow();
         DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
         precioinput.setText(model.getValueAt(i,0).toString());
@@ -386,6 +406,7 @@ public class PantallaRegistro extends javax.swing.JFrame {
         leyendainput.setText(model.getValueAt(i,0).toString());
         
         try {
+            
             date = new SimpleDateFormat("dd/MM/yyyy").parse((String)jTable1.getValueAt(i,3));
             fechaininput.setDate(date);
         } catch (ParseException ex) {
@@ -393,8 +414,12 @@ public class PantallaRegistro extends javax.swing.JFrame {
         }
        
         try {
-            date = new SimpleDateFormat("dd/MM/yyyy").parse((String)jTable1.getValueAt(i,4));
-            fechaoutinput.setDate(date);
+             f = new SimpleDateFormat("dd/MM/yyyy").parse((String)jTable1.getValueAt(i,4));
+            if (f==null) {
+            fechaoutinput.setDate(null);
+            }
+            
+            fechaoutinput.setDate(f);
         } catch (ParseException ex) {
             Logger.getLogger(PantallaRegistro.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -533,7 +558,7 @@ public class PantallaRegistro extends javax.swing.JFrame {
                     if (c==in){
                     
                     
-                    bw.write(jTable1.getValueAt(i,j).toString()+"|");
+                    bw.write(jTable1.getValueAt(i,j).toString()+" ");
                     }
                    
                 }
@@ -554,6 +579,14 @@ public class PantallaRegistro extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
         //TableModel model1 = jTable1.getModel();
+     int o;   
+     o = jTable1.getRowCount();
+     if (o==0){
+         new Menu().setVisible(true);
+         this.dispose();
+     }
+     else {
+     
     int selectedOption = JOptionPane.showConfirmDialog(null, 
                                   "¿Estás seguro?", 
                                   "     REGRESAR", 
@@ -566,9 +599,10 @@ public class PantallaRegistro extends javax.swing.JFrame {
         new Menu().setVisible(true);
        this.dispose(); 
     }
+              
            
     }
-        
+     }
         
         
         
@@ -582,6 +616,13 @@ public class PantallaRegistro extends javax.swing.JFrame {
     private void fechaininputAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_fechaininputAncestorAdded
         // TODO add your handling code here:
     }//GEN-LAST:event_fechaininputAncestorAdded
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+model.setRowCount(0);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -626,6 +667,7 @@ public class PantallaRegistro extends javax.swing.JFrame {
     private com.toedter.calendar.JDateChooser fechaoutinput;
     private javax.swing.JComboBox<String> filterCB;
     private java.awt.TextField idinput;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -637,6 +679,7 @@ public class PantallaRegistro extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
