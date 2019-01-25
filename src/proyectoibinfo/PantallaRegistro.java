@@ -15,6 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -132,7 +133,7 @@ public class PantallaRegistro extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Precio", "ID", "Leyenda", "Fecha In", "Fecha Out"
+                "Precio", "ID", "Leyenda", "Fecha In", "Fecha Out", "Title 6"
             }
         ));
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -267,20 +268,22 @@ public class PantallaRegistro extends javax.swing.JFrame {
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel modelo = (DefaultTableModel)jTable1.getModel();
+     DefaultTableModel modelo = (DefaultTableModel)jTable1.getModel();
        Date r;
        Date t;
        Date v=fechaininput.getDate();
        Date u=fechaoutinput.getDate();
+       Calendar cal_fechain;
        
-       String Dato[] = new String [5];
+       
+       Object Dato[] = new Object [6];
        
       
       
                  Dato[0]  = precioinput.getText();
                  Dato[1]  = idinput.getText();
                  if (v==null){
-                     fechaininput.setDate(null);
+                     JOptionPane.showMessageDialog(this,"Por favor ingrese Fecha In");
                  }
                  else {
                    SimpleDateFormat df = new SimpleDateFormat ("dd/MM/yyyy");
@@ -289,9 +292,9 @@ public class PantallaRegistro extends javax.swing.JFrame {
                     LocalDate localDate = r.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                     int month = localDate.getMonthValue();
                     String ns = df.format(q);
-                    
                     Dato[3]  = ns;
                  }
+                 cal_fechain = Calendar.getInstance();
                    if (u==null){
                      fechaoutinput.setDate(null);
                  }
@@ -303,18 +306,23 @@ public class PantallaRegistro extends javax.swing.JFrame {
              
                  Dato[4]  = fd;
                    }
-                   
                  Dato[2]  = leyendainput.getText();
+                 if(v != null){
+                     cal_fechain = fechaininput.getCalendar();
+                     int mes_in = cal_fechain.get(Calendar.MONTH);
                  
+                 Dato [5]= mes_in;
+                  modelo.addRow(Dato);
+                  jTable1.removeColumn(jTable1.getColumn(5));
+                  System.out.print(mes_in);
+              
+                 } 
                  
               
-                 
-                 modelo.addRow(Dato);
                 
                  
                  
-                 
-           
+                                          
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -350,6 +358,7 @@ public class PantallaRegistro extends javax.swing.JFrame {
                  SimpleDateFormat ff = new SimpleDateFormat("dd/MM/yyyy");
                     Date fc=fechaoutinput.getDate();
                     String fd= ff.format(fc);
+                    
                     
              
                model.setValueAt(fd,i,4);
@@ -393,7 +402,7 @@ public class PantallaRegistro extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         
-        precioinput.setText(null);
+        precioinput.setText("");
         idinput.setText(null);
         leyendainput.setText(null);
         fechaininput.setDate(null);
