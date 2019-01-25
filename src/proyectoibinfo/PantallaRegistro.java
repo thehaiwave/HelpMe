@@ -5,9 +5,20 @@
  */
 package proyectoibinfo;
 
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -18,6 +29,8 @@ public class PantallaRegistro extends javax.swing.JFrame {
     /**
      * Creates new form PantallaRegistro
      */
+    
+    TableRowSorter trs;
     public PantallaRegistro() {
         initComponents();
         setSize(900,600);
@@ -25,8 +38,11 @@ public class PantallaRegistro extends javax.swing.JFrame {
         this.setTitle("                                                                           REGISTRO");
         setResizable(false);
         showDate();
+        
        
     }
+    
+
     
     
     void showDate(){
@@ -47,13 +63,14 @@ public class PantallaRegistro extends javax.swing.JFrame {
 
         jScrollPane2 = new javax.swing.JScrollPane();
         jEditorPane1 = new javax.swing.JEditorPane();
+        jLabel6 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         date = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         Buscar = new javax.swing.JLabel();
-        textField1 = new java.awt.TextField();
+        jtxtFiltro = new java.awt.TextField();
         precioinput = new java.awt.TextField();
         idinput = new java.awt.TextField();
         leyendainput = new java.awt.TextField();
@@ -65,8 +82,14 @@ public class PantallaRegistro extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        limpiaFields = new javax.swing.JButton();
+        filterCB = new javax.swing.JComboBox<>();
 
         jScrollPane2.setViewportView(jEditorPane1);
+
+        jLabel6.setText("jLabel6");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(900, 600));
@@ -74,6 +97,7 @@ public class PantallaRegistro extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(66, 134, 244));
         jPanel1.setMaximumSize(new java.awt.Dimension(900, 600));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         date.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         date.setText("jLabel1");
@@ -83,9 +107,9 @@ public class PantallaRegistro extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(869, Short.MAX_VALUE)
+                .addContainerGap(720, Short.MAX_VALUE)
                 .addComponent(date)
-                .addGap(24, 24, 24))
+                .addGap(173, 173, 173))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -95,41 +119,70 @@ public class PantallaRegistro extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Precio", "ID", "Fecha In", "Fecha Out", "Leyenda"
+                "Precio", "ID", "Leyenda", "Fecha In", "Fecha Out"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
+
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 513, 370));
 
         Buscar.setFont(new java.awt.Font("Tahoma", 0, 21)); // NOI18N
         Buscar.setText("Buscar");
+        jPanel1.add(Buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, -1, -1));
+
+        jtxtFiltro.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtxtFiltroKeyTyped(evt);
+            }
+        });
+        jPanel1.add(jtxtFiltro, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 80, 300, 28));
 
         precioinput.setFont(new java.awt.Font("Dialog", 0, 21)); // NOI18N
+        jPanel1.add(precioinput, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 120, 163, -1));
 
         idinput.setFont(new java.awt.Font("Dialog", 0, 21)); // NOI18N
+        jPanel1.add(idinput, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 180, 163, -1));
 
         leyendainput.setFont(new java.awt.Font("Dialog", 0, 21)); // NOI18N
+        jPanel1.add(leyendainput, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 250, 163, 84));
 
         fechaininput.setFont(new java.awt.Font("Tahoma", 0, 21)); // NOI18N
+        jPanel1.add(fechaininput, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 360, 163, 32));
+
+        fechaoutinput.setFont(new java.awt.Font("Tahoma", 0, 21)); // NOI18N
+        jPanel1.add(fechaoutinput, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 420, 163, 32));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 21)); // NOI18N
         jLabel1.setText("Precio");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 120, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 21)); // NOI18N
         jLabel2.setText("ID");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 180, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 21)); // NOI18N
         jLabel3.setText("Fecha In");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 360, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 21)); // NOI18N
         jLabel4.setText("Fecha Out");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 420, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 21)); // NOI18N
         jLabel5.setText("Leyenda");
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 250, -1, -1));
 
         jButton1.setText("REGISTRAR");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -137,88 +190,39 @@ public class PantallaRegistro extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 490, -1, -1));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(Buscar)
-                        .addGap(20, 20, 20)
-                        .addComponent(textField1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 513, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel1)
-                                            .addComponent(jLabel2))
-                                        .addGap(79, 79, 79))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel5)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(precioinput, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
-                                        .addComponent(leyendainput, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addComponent(idinput, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(fechaininput, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(fechaoutinput, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(33, 33, 33))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addGap(128, 128, 128))))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Buscar)
-                    .addComponent(textField1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(17, 17, 17)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(precioinput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel1))
-                                .addGap(27, 27, 27)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(idinput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel2))
-                                .addGap(33, 33, 33)
-                                .addComponent(fechaininput, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel3))
-                        .addGap(37, 37, 37)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(fechaoutinput, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4))
-                        .addGap(35, 35, 35)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(leyendainput, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30))
-        );
+        jButton2.setText("ACTUALIZAR");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 490, 150, -1));
+
+        jButton3.setText("ELIMINAR");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 490, 120, 30));
+
+        limpiaFields.setText("LIMPIAR");
+        limpiaFields.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                limpiaFieldsActionPerformed(evt);
+            }
+        });
+        jPanel1.add(limpiaFields, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 70, -1, -1));
+
+        filterCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Precio", "ID", "Leyenda", "Fecha In", "Fecha Out", " " }));
+        filterCB.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                filterCBItemStateChanged(evt);
+            }
+        });
+        jPanel1.add(filterCB, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 80, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -236,15 +240,200 @@ public class PantallaRegistro extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        DefaultTableModel modelo = (DefaultTableModel)jTable1.getModel();
+       Date r;
+       Date t;
+       Date v=fechaininput.getDate();
+       Date u=fechaoutinput.getDate();
+       
+       String Dato[] = new String [5];
+       
+      
+      
+                 Dato[0]  = precioinput.getText();
+                 Dato[1]  = idinput.getText();
+                 if (v==null){
+                     fechaininput.setDate(null);
+                 }
+                 else {
+                   SimpleDateFormat df = new SimpleDateFormat ("dd/MM/yyyy");
+                    Date q = fechaininput.getDate();
+                    r=q;
+                    LocalDate localDate = r.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    int month = localDate.getMonthValue();
+                    String ns = df.format(q);
+                    Dato[3]  = ns;
+                 }
+                   if (u==null){
+                     fechaoutinput.setDate(null);
+                 }
+                   else {
+                 SimpleDateFormat ff = new SimpleDateFormat("dd/MM/yyyy");
+                    Date fc=fechaoutinput.getDate();
+                    String fd= ff.format(fc);
+                    
+             
+                 Dato[4]  = fd;
+                   }
+                 Dato[2]  = leyendainput.getText();
+              
+                 
+                 modelo.addRow(Dato);
+                
+                 
+                 
+                 
+           
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+       
+       int i = jTable1.getSelectedRow();
+       DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+       if (i >=0)
+       {
+          Date r;
+          Date t;   
+          Date v=fechaininput.getDate();
+          Date u=fechaoutinput.getDate();
+          model.setValueAt(precioinput.getText(),i,0);
+          model.setValueAt(idinput.getText(),i,1);
+          model.setValueAt(leyendainput.getText(),i,2);
+       if (v==null){
+                     fechaininput.setDate(null);
+                 }
+                 else {
+                   SimpleDateFormat df = new SimpleDateFormat ("dd/MM/yyyy");
+                    Date q = fechaininput.getDate();
+                    r=q;
+                    LocalDate localDate = r.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    int month = localDate.getMonthValue();
+                    String ns = df.format(q);
+                    model.setValueAt(ns,i,3);
+                 }
+                   if (u==null){
+                     fechaoutinput.setDate(null);
+                 }
+                   else {
+                 SimpleDateFormat ff = new SimpleDateFormat("dd/MM/yyyy");
+                    Date fc=fechaoutinput.getDate();
+                    String fd= ff.format(fc);
+                    
+             
+               model.setValueAt(fd,i,4);
+                   }
+       } else {
+           JOptionPane.showMessageDialog(this, "Seleccione una fila para actualizar");
+       }
+       
+       
+       
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // TODO add your handling code here:
+        Date date;
+        int i = jTable1.getSelectedRow();
+        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+        precioinput.setText(model.getValueAt(i,0).toString());
+        idinput.setText(model.getValueAt(i,0).toString());
+        leyendainput.setText(model.getValueAt(i,0).toString());
         
         try {
-         DefaultTableModel model=(DefaultTableModel)jTable1.getModel();
-         int index = jTable1.getSelectedRow();
-         Date date = new SimpleDateFormat("dd/MM/yyyy").parse((String)model.getValueAt(index,0));
-         
-        model.addRow(new Object[]{idinput.getText(),precioinput.getText(),leyendainput.getText()
-       , fechaininput.getText(),fechaoutinput.getText()});
-    }//GEN-LAST:event_jButton1ActionPerformed
+            date = new SimpleDateFormat("dd/MM/yyyy").parse((String)jTable1.getValueAt(i,3));
+            fechaininput.setDate(date);
+        } catch (ParseException ex) {
+            Logger.getLogger(PantallaRegistro.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+        try {
+            date = new SimpleDateFormat("dd/MM/yyyy").parse((String)jTable1.getValueAt(i,4));
+            fechaoutinput.setDate(date);
+        } catch (ParseException ex) {
+            Logger.getLogger(PantallaRegistro.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      
+        
+        
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void limpiaFieldsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limpiaFieldsActionPerformed
+        // TODO add your handling code here:
+        
+        
+        precioinput.setText(null);
+        idinput.setText(null);
+        leyendainput.setText(null);
+        fechaininput.setDate(null);
+        fechaoutinput.setDate(null);
+    }//GEN-LAST:event_limpiaFieldsActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        
+        
+        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+        int i= jTable1.getSelectedRow();
+        
+        if (i>=0){
+           model.removeRow(i);
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "Seleccione una fila para eliminar");
+        }
+                 
+        
+        
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jtxtFiltroKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxtFiltroKeyTyped
+        // TODO add your handling code here:
+    
+        
+        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+        jtxtFiltro.addKeyListener(new KeyAdapter() {
+            
+            @Override
+               public void keyReleased (KeyEvent ke){
+               int ty;
+        String query = filterCB.getSelectedItem().toString();
+        
+        if (query == "Precio"){
+            ty=0;
+        }
+        else if (query == "ID"){
+            ty=1;
+        }
+        else if (query == "Leyenda"){
+            ty=2;
+        }
+        else if (query == "Fecha In"){
+            ty=3;
+        }
+        else {
+           
+            ty=4;
+        }
+                trs.setRowFilter(RowFilter.regexFilter(jtxtFiltro.getText(),ty));
+            }
+            
+        });        
+        
+        trs = new TableRowSorter(model);
+        jTable1.setRowSorter(trs);
+        
+        
+        
+    }//GEN-LAST:event_jtxtFiltroKeyTyped
+
+    
+    private void filterCBItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_filterCBItemStateChanged
+        // TODO add your handling code here:
+       
+        
+        
+    }//GEN-LAST:event_filterCBItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -286,21 +475,26 @@ public class PantallaRegistro extends javax.swing.JFrame {
     private javax.swing.JLabel date;
     private com.toedter.calendar.JDateChooser fechaininput;
     private com.toedter.calendar.JDateChooser fechaoutinput;
+    private javax.swing.JComboBox<String> filterCB;
     private java.awt.TextField idinput;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JEditorPane jEditorPane1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
+    private java.awt.TextField jtxtFiltro;
     private java.awt.TextField leyendainput;
+    private javax.swing.JButton limpiaFields;
     private java.awt.TextField precioinput;
-    private java.awt.TextField textField1;
     // End of variables declaration//GEN-END:variables
 }
