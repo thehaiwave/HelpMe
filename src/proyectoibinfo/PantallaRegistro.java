@@ -5,6 +5,7 @@
  */
 package proyectoibinfo;
 
+import static java.awt.SystemColor.window;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.BufferedWriter;
@@ -43,6 +44,8 @@ public class PantallaRegistro extends javax.swing.JFrame {
         this.setTitle("                                                                           REGISTRO");
         setResizable(false);
         showDate();
+        jTable1.getColumnModel().getColumn(5).setMinWidth(0);
+        jTable1.getColumnModel().getColumn(5).setMaxWidth(0);
         
        
     }
@@ -244,13 +247,13 @@ public class PantallaRegistro extends javax.swing.JFrame {
         jLabel7.setText("$");
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 120, -1, -1));
 
-        jButton4.setText("jButton4");
+        jButton4.setText("REGRESAR");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 500, -1, -1));
+        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 490, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -296,7 +299,10 @@ public class PantallaRegistro extends javax.swing.JFrame {
                  }
                  cal_fechain = Calendar.getInstance();
                    if (u==null){
-                     fechaoutinput.setDate(null);
+                       SimpleDateFormat ff = new SimpleDateFormat("dd/MM/yyyy");
+                    Date fc=fechaoutinput.getDate();
+                     String ts = ff.format(fc);
+                     Dato [4]= ts;
                  }
                    else {
                  SimpleDateFormat ff = new SimpleDateFormat("dd/MM/yyyy");
@@ -313,8 +319,7 @@ public class PantallaRegistro extends javax.swing.JFrame {
                  
                  Dato [5]= mes_in;
                   modelo.addRow(Dato);
-                  jTable1.removeColumn(jTable1.getColumn(5));
-                  System.out.print(mes_in);
+                 
               
                  } 
                  
@@ -474,23 +479,63 @@ public class PantallaRegistro extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_filterCBItemStateChanged
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-        //TableModel model1 = jTable1.getModel();
-  
-    
-        String filePath = "C:\\Users\\Carlos Manuel\\Documents\\NetBeansProjects\\HelpMe\\enero.txt";
+    private void writte (int in){
+        String mes = null;
+        
+        switch (in){
+            case 0:
+                mes= "enero";
+                break;
+            case 1:
+                mes="febrero";
+                break;
+            case 2:
+                mes="marzo";
+                break;
+            case 3:
+                mes="abril";
+                break;
+            case 4:
+                mes="mayo";
+                break;
+            case 5:
+                mes="junio";
+                break;
+            case 6:
+                mes="julio";
+                break;
+            case 7:
+                mes="agosto";
+                break;
+            case 8:
+                mes="septiembre";
+                break;
+            case 9:
+                mes="octubre";
+                break;
+            case 10:
+                mes="noviembre";
+                break;
+            case 11:
+                mes="diciembre";
+                break;
+              
+        }
+        int c;
+        String filePath = "C:\\Users\\Carlos Manuel\\Documents\\NetBeansProjects\\HelpMe\\"+mes+".txt";
         File file = new File(filePath);
         try {
             FileWriter fw = new FileWriter(file);
             BufferedWriter bw = new BufferedWriter(fw);
             for(int i = 0; i<jTable1.getRowCount(); i++){
                 for (int j=0; j<jTable1.getColumnCount(); j++){
+                    c = (int) jTable1.getValueAt(i,5);
+                    if (c==in){
                     
                     
-                    bw.write(jTable1.getValueAt(i,j).toString()+"  ");
-                    
+                    bw.write(jTable1.getValueAt(i,j).toString()+"|");
+                    }
+                   
                 }
                 bw.newLine();
             }
@@ -504,6 +549,26 @@ public class PantallaRegistro extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(PantallaRegistro.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+    }
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        //TableModel model1 = jTable1.getModel();
+    int selectedOption = JOptionPane.showConfirmDialog(null, 
+                                  "¿Estás seguro?", 
+                                  "     REGRESAR", 
+                                  JOptionPane.YES_NO_OPTION); 
+              if (selectedOption == JOptionPane.YES_OPTION) {
+  int in;
+    for (int t=0; t<jTable1.getRowCount(); t++){
+        in = (int) jTable1.getValueAt(t, 5);
+        writte(in);
+        new Menu().setVisible(true);
+       this.dispose(); 
+    }
+           
+    }
+        
         
         
         
