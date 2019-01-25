@@ -7,6 +7,10 @@ package proyectoibinfo;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -81,11 +85,13 @@ public class PantallaRegistro extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnRegistrar = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         limpiaFields = new javax.swing.JButton();
         filterCB = new javax.swing.JComboBox<>();
+        jLabel7 = new javax.swing.JLabel();
+        jButton4 = new javax.swing.JButton();
 
         jScrollPane2.setViewportView(jEditorPane1);
 
@@ -159,6 +165,15 @@ public class PantallaRegistro extends javax.swing.JFrame {
         jPanel1.add(leyendainput, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 250, 163, 84));
 
         fechaininput.setFont(new java.awt.Font("Tahoma", 0, 21)); // NOI18N
+        fechaininput.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                fechaininputAncestorAdded(evt);
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
         jPanel1.add(fechaininput, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 360, 163, 32));
 
         fechaoutinput.setFont(new java.awt.Font("Tahoma", 0, 21)); // NOI18N
@@ -184,13 +199,13 @@ public class PantallaRegistro extends javax.swing.JFrame {
         jLabel5.setText("Leyenda");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 250, -1, -1));
 
-        jButton1.setText("REGISTRAR");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnRegistrar.setText("REGISTRAR");
+        btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnRegistrarActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 490, -1, -1));
+        jPanel1.add(btnRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 490, -1, -1));
 
         jButton2.setText("ACTUALIZAR");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -224,6 +239,18 @@ public class PantallaRegistro extends javax.swing.JFrame {
         });
         jPanel1.add(filterCB, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 80, -1, -1));
 
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 25)); // NOI18N
+        jLabel7.setText("$");
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 120, -1, -1));
+
+        jButton4.setText("jButton4");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 500, -1, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -238,7 +265,7 @@ public class PantallaRegistro extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
         // TODO add your handling code here:
         DefaultTableModel modelo = (DefaultTableModel)jTable1.getModel();
        Date r;
@@ -262,6 +289,7 @@ public class PantallaRegistro extends javax.swing.JFrame {
                     LocalDate localDate = r.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                     int month = localDate.getMonthValue();
                     String ns = df.format(q);
+                    
                     Dato[3]  = ns;
                  }
                    if (u==null){
@@ -275,7 +303,10 @@ public class PantallaRegistro extends javax.swing.JFrame {
              
                  Dato[4]  = fd;
                    }
+                   
                  Dato[2]  = leyendainput.getText();
+                 
+                 
               
                  
                  modelo.addRow(Dato);
@@ -284,7 +315,7 @@ public class PantallaRegistro extends javax.swing.JFrame {
                  
                  
            
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
@@ -435,6 +466,49 @@ public class PantallaRegistro extends javax.swing.JFrame {
         
     }//GEN-LAST:event_filterCBItemStateChanged
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        //TableModel model1 = jTable1.getModel();
+  
+    
+        String filePath = "C:\\Users\\Carlos Manuel\\Documents\\NetBeansProjects\\HelpMe\\enero.txt";
+        File file = new File(filePath);
+        try {
+            FileWriter fw = new FileWriter(file);
+            BufferedWriter bw = new BufferedWriter(fw);
+            for(int i = 0; i<jTable1.getRowCount(); i++){
+                for (int j=0; j<jTable1.getColumnCount(); j++){
+                    
+                    
+                    bw.write(jTable1.getValueAt(i,j).toString()+"  ");
+                    
+                }
+                bw.newLine();
+            }
+            
+            
+            
+            bw.close();
+            fw.close();
+            
+            
+        } catch (IOException ex) {
+            Logger.getLogger(PantallaRegistro.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        
+     
+        
+        
+            //new Menu().setVisible(true);
+            //this.setVisible(false);
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void fechaininputAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_fechaininputAncestorAdded
+        // TODO add your handling code here:
+    }//GEN-LAST:event_fechaininputAncestorAdded
+
     /**
      * @param args the command line arguments
      */
@@ -472,14 +546,15 @@ public class PantallaRegistro extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Buscar;
+    private javax.swing.JButton btnRegistrar;
     private javax.swing.JLabel date;
     private com.toedter.calendar.JDateChooser fechaininput;
     private com.toedter.calendar.JDateChooser fechaoutinput;
     private javax.swing.JComboBox<String> filterCB;
     private java.awt.TextField idinput;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JEditorPane jEditorPane1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -487,6 +562,7 @@ public class PantallaRegistro extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
