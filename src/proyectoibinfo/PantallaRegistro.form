@@ -205,6 +205,11 @@
           </Constraints>
         </Component>
         <Component class="java.awt.TextField" name="jtxtFiltro">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Dialog" size="16" style="0"/>
+            </Property>
+          </Properties>
           <Events>
             <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jtxtFiltroKeyTyped"/>
           </Events>
@@ -220,6 +225,9 @@
               <Font name="Dialog" size="21" style="0"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="precioinputKeyTyped"/>
+          </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
               <AbsoluteConstraints x="690" y="120" width="163" height="-1"/>
@@ -397,13 +405,12 @@
         <Component class="javax.swing.JComboBox" name="filterCB">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="6">
+              <StringArray count="5">
                 <StringItem index="0" value="Precio"/>
                 <StringItem index="1" value="ID"/>
                 <StringItem index="2" value="Leyenda"/>
                 <StringItem index="3" value="Fecha In"/>
                 <StringItem index="4" value="Fecha Out"/>
-                <StringItem index="5" value=" "/>
               </StringArray>
             </Property>
           </Properties>

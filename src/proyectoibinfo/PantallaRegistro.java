@@ -42,6 +42,7 @@ public class PantallaRegistro extends javax.swing.JFrame {
      */
     
     TableRowSorter trs;
+    
     public PantallaRegistro() {
         initComponents();
         setSize(900,600);
@@ -169,6 +170,7 @@ public class PantallaRegistro extends javax.swing.JFrame {
         Buscar.setText("Buscar");
         jPanel1.add(Buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, -1, -1));
 
+        jtxtFiltro.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
         jtxtFiltro.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 jtxtFiltroKeyTyped(evt);
@@ -177,6 +179,11 @@ public class PantallaRegistro extends javax.swing.JFrame {
         jPanel1.add(jtxtFiltro, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 80, 300, 28));
 
         precioinput.setFont(new java.awt.Font("Dialog", 0, 21)); // NOI18N
+        precioinput.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                precioinputKeyTyped(evt);
+            }
+        });
         jPanel1.add(precioinput, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 120, 163, -1));
 
         idinput.setFont(new java.awt.Font("Dialog", 0, 21)); // NOI18N
@@ -252,7 +259,7 @@ public class PantallaRegistro extends javax.swing.JFrame {
         });
         jPanel1.add(limpiaFields, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 70, -1, -1));
 
-        filterCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Precio", "ID", "Leyenda", "Fecha In", "Fecha Out", " " }));
+        filterCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Precio", "ID", "Leyenda", "Fecha In", "Fecha Out" }));
         filterCB.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 filterCBItemStateChanged(evt);
@@ -296,6 +303,7 @@ public class PantallaRegistro extends javax.swing.JFrame {
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
         // TODO add your handling code here:
+        
      DefaultTableModel modelo = (DefaultTableModel)jTable1.getModel();
        Date r;
        Date t;
@@ -556,19 +564,11 @@ public class PantallaRegistro extends javax.swing.JFrame {
               
         }
         int c;
-        String filePath = "C:\\Users\\Carlos Manuel\\Documents\\NetBeansProjects\\HelpMe\\"+mes+".txt";
+        String filePath = "C:\\Users\\Carlos Manuel\\Documents\\NetBeansProjects\\HelpMe\\MESES\\"+mes+".txt";
         File file = new File(filePath);
         
         
         try {
-      //     FileWriter fw = new FileWriter(file); 
-        //    BufferedWriter bw = new BufferedWriter(fw);
-        //    PrintWriter pw = new PrintWriter(new FileOutputStream(file,true));
-        //    FileReader fr;
-        //    fr = new FileReader(file);
-        //    String rip;
-        //    BufferedReader br = new BufferedReader(fr);
-        //    Object[] lines = br.lines().toArray();
         FileWriter fw = new FileWriter(file, true);
         BufferedWriter bw = new  BufferedWriter (fw);
         PrintWriter pw = new PrintWriter(bw);
@@ -657,6 +657,15 @@ model.setRowCount(0);
     private void jTable1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseEntered
         // TODO add your handling code here:
     }//GEN-LAST:event_jTable1MouseEntered
+
+    private void precioinputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_precioinputKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        char ch = evt.getKeyChar();
+        if(!(Character.isDigit(c) || (c==KeyEvent.VK_BACK_SPACE) || c==KeyEvent.VK_DELETE) || c=='y')  {
+         evt.consume();
+    }
+    }//GEN-LAST:event_precioinputKeyTyped
 
     /**
      * @param args the command line arguments

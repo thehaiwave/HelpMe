@@ -5,6 +5,8 @@
  */
 package proyectoibinfo;
 
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -19,7 +21,9 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -30,6 +34,7 @@ public class PantallaMeses extends javax.swing.JFrame {
     /**
      * Creates new form PantallaMeses
      */
+    TableRowSorter trs;
     public PantallaMeses() {
         initComponents();
          setSize(900,600);
@@ -65,6 +70,8 @@ public class PantallaMeses extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        txtFiltro2 = new java.awt.TextField();
+        filtroCBPM = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -121,7 +128,7 @@ public class PantallaMeses extends javax.swing.JFrame {
                 mesCBActionPerformed(evt);
             }
         });
-        jPanel1.add(mesCB, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 60, 450, -1));
+        jPanel1.add(mesCB, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 60, 140, -1));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 21)); // NOI18N
         jLabel1.setText("Seleccionar Mes");
@@ -142,6 +149,17 @@ public class PantallaMeses extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 510, -1, -1));
+
+        txtFiltro2.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
+        txtFiltro2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtFiltro2KeyTyped(evt);
+            }
+        });
+        jPanel1.add(txtFiltro2, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 60, 340, 30));
+
+        filtroCBPM.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Precio", "ID", "Leyenda", "Fecha In", "Fecha Out" }));
+        jPanel1.add(filtroCBPM, new org.netbeans.lib.awtextra.AbsoluteConstraints(738, 60, 100, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -303,7 +321,7 @@ public class PantallaMeses extends javax.swing.JFrame {
         }
         
         int c;
-         String filePath = "C:\\Users\\Carlos Manuel\\Documents\\NetBeansProjects\\HelpMe\\"+yt+".txt";
+         String filePath = "C:\\Users\\Carlos Manuel\\Documents\\NetBeansProjects\\HelpMe\\MESES\\"+yt+".txt";
         File file = new File(filePath);
         try {
             FileWriter fw = new FileWriter(file);
@@ -362,6 +380,42 @@ public class PantallaMeses extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void txtFiltro2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFiltro2KeyTyped
+        // TODO add your handling code here:
+        
+        DefaultTableModel model = (DefaultTableModel)jTable2.getModel();
+        txtFiltro2.addKeyListener(new KeyAdapter() {
+            
+            @Override
+               public void keyReleased (KeyEvent ke){
+               int ty;
+        String query = filtroCBPM.getSelectedItem().toString();
+        
+        if (query == "Precio"){
+            ty=0;
+        }
+        else if (query == "ID"){
+            ty=1;
+        }
+        else if (query == "Leyenda"){
+            ty=2;
+        }
+        else if (query == "Fecha In"){
+            ty=3;
+        }
+        else {
+           
+            ty=4;
+        }
+                trs.setRowFilter(RowFilter.regexFilter(txtFiltro2.getText(),ty));
+            }
+            
+        });        
+        
+        trs = new TableRowSorter(model);
+        jTable2.setRowSorter(trs);
+    }//GEN-LAST:event_txtFiltro2KeyTyped
+
     /**
      * @param args the command line arguments
      */
@@ -399,6 +453,7 @@ public class PantallaMeses extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel date;
+    private javax.swing.JComboBox<String> filtroCBPM;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -408,5 +463,6 @@ public class PantallaMeses extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     public javax.swing.JTable jTable2;
     private javax.swing.JComboBox<String> mesCB;
+    private java.awt.TextField txtFiltro2;
     // End of variables declaration//GEN-END:variables
 }
