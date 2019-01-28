@@ -53,6 +53,7 @@ public class PantallaRegistro extends javax.swing.JFrame {
         jTable1.getColumnModel().getColumn(5).setMinWidth(0);
         jTable1.getColumnModel().getColumn(5).setMaxWidth(0);
         
+        
        
     }
     
