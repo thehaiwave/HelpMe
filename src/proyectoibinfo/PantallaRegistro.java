@@ -11,13 +11,16 @@ import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
@@ -438,7 +441,7 @@ public class PantallaRegistro extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         
-        precioinput.setText("");
+        precioinput.setText(null);
         idinput.setText(null);
         leyendainput.setText(null);
         fechaininput.setDate(null);
@@ -558,34 +561,47 @@ public class PantallaRegistro extends javax.swing.JFrame {
         
         
         try {
-            FileWriter fw = new FileWriter(file);
-            BufferedWriter bw = new BufferedWriter(fw);
+      //     FileWriter fw = new FileWriter(file); 
+        //    BufferedWriter bw = new BufferedWriter(fw);
+        //    PrintWriter pw = new PrintWriter(new FileOutputStream(file,true));
+        //    FileReader fr;
+        //    fr = new FileReader(file);
+        //    String rip;
+        //    BufferedReader br = new BufferedReader(fr);
+        //    Object[] lines = br.lines().toArray();
+        FileWriter fw = new FileWriter(file, true);
+        BufferedWriter bw = new  BufferedWriter (fw);
+        PrintWriter pw = new PrintWriter(bw);
+        int r = jTable1.getRowCount();
+        
+        System.out.println(r);
             for(int i = 0; i<jTable1.getRowCount(); i++){
-                for (int j=0; j<jTable1.getColumnCount(); j++){
+                for (int j=0; j<jTable1.getColumnCount(); j++)
+                //esta ejecutando por linea el numero de rows
+                    // si hay dos rows, ejecuta este for dos veces para cada row
+                {
                     c = (int) jTable1.getValueAt(i,5);
                     
                     if (c==in){
+                   // fw.write(jTable1.getValueAt(i,j).toString()+" ");
+                   pw.print(jTable1.getValueAt(i,j).toString()+" ");
+                   System.out.println("PRINTEANDO");
                     
-                    bw.write(jTable1.getValueAt(i,j).toString()+" ");
                     }
-                  
                    
                 }
-                bw.newLine();
-                
+                System.out.println("FIN LOOP COLUMNAS");
+             bw.newLine();
             }
-            
-            
-            
-            
-            
-            bw.close();
-            fw.close();
+            System.out.println("FIN LOOP ROWS");
+            pw.close();
+        //    bw.close();
+        //    fw.close();
             
             
         } catch (IOException ex) {
             Logger.getLogger(PantallaRegistro.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } 
         
     }
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -605,8 +621,9 @@ public class PantallaRegistro extends javax.swing.JFrame {
                                   JOptionPane.YES_NO_OPTION); 
               if (selectedOption == JOptionPane.YES_OPTION) {
   int in;
-    for (int t=0; t<jTable1.getRowCount(); t++){
+    for (int t=0; t<1; t++){
         in = (int) jTable1.getValueAt(t, 5);
+        System.out.println("yayai");
         writte(in);
         
     }
