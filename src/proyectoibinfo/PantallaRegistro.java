@@ -8,8 +8,10 @@ package proyectoibinfo;
 import static java.awt.SystemColor.window;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
@@ -151,6 +153,9 @@ public class PantallaRegistro extends javax.swing.JFrame {
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jTable1MouseEntered(evt);
             }
         });
         jScrollPane1.setViewportView(jTable1);
@@ -336,6 +341,7 @@ public class PantallaRegistro extends javax.swing.JFrame {
                      int mes_in = cal_fechain.get(Calendar.MONTH);
                  
                  Dato [5]= mes_in;
+                
                   modelo.addRow(Dato);
                  
               
@@ -402,8 +408,8 @@ public class PantallaRegistro extends javax.swing.JFrame {
         int i = jTable1.getSelectedRow();
         DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
         precioinput.setText(model.getValueAt(i,0).toString());
-        idinput.setText(model.getValueAt(i,0).toString());
-        leyendainput.setText(model.getValueAt(i,0).toString());
+        idinput.setText(model.getValueAt(i,1).toString());
+        leyendainput.setText(model.getValueAt(i,2).toString());
         
         try {
             
@@ -549,21 +555,27 @@ public class PantallaRegistro extends javax.swing.JFrame {
         int c;
         String filePath = "C:\\Users\\Carlos Manuel\\Documents\\NetBeansProjects\\HelpMe\\"+mes+".txt";
         File file = new File(filePath);
+        
+        
         try {
             FileWriter fw = new FileWriter(file);
             BufferedWriter bw = new BufferedWriter(fw);
             for(int i = 0; i<jTable1.getRowCount(); i++){
                 for (int j=0; j<jTable1.getColumnCount(); j++){
                     c = (int) jTable1.getValueAt(i,5);
-                    if (c==in){
                     
+                    if (c==in){
                     
                     bw.write(jTable1.getValueAt(i,j).toString()+" ");
                     }
+                  
                    
                 }
                 bw.newLine();
+                
             }
+            
+            
             
             
             
@@ -596,9 +608,10 @@ public class PantallaRegistro extends javax.swing.JFrame {
     for (int t=0; t<jTable1.getRowCount(); t++){
         in = (int) jTable1.getValueAt(t, 5);
         writte(in);
-        new Menu().setVisible(true);
-       this.dispose(); 
+        
     }
+    new Menu().setVisible(true);
+       this.dispose(); 
               
            
     }
@@ -623,6 +636,10 @@ public class PantallaRegistro extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
 model.setRowCount(0);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTable1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable1MouseEntered
 
     /**
      * @param args the command line arguments

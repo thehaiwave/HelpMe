@@ -15,6 +15,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -210,6 +211,7 @@ public class PantallaMeses extends javax.swing.JFrame {
         }
           String filePath = "C:\\Users\\Carlos Manuel\\Documents\\NetBeansProjects\\HelpMe\\"+yt+".txt";
           File file = new File(filePath);
+          String line = null;
           
           FileReader fr;
         try {
@@ -220,15 +222,23 @@ public class PantallaMeses extends javax.swing.JFrame {
             Object[] lines = br.lines().toArray();
             
             for(int i= 0; i<lines.length; i++){
-                
+               
                 String [] row = lines[i].toString().split(" ");
-                model.addRow(row);
+                
+                
+                if (row.length>1){
+                    model.addRow(row);
+                }
+                
+              
+             //   System.out.println(row[1]);
+                
             }
             
             
         } catch (FileNotFoundException ex) {
             Logger.getLogger(PantallaMeses.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } 
         
      
           
