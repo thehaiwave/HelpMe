@@ -180,6 +180,11 @@ public class PantallaRegistro extends javax.swing.JFrame {
         jPanel1.add(jtxtFiltro, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 80, 300, 28));
 
         precioinput.setFont(new java.awt.Font("Dialog", 0, 21)); // NOI18N
+        precioinput.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                precioinputActionPerformed(evt);
+            }
+        });
         precioinput.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 precioinputKeyTyped(evt);
@@ -578,36 +583,22 @@ public class PantallaRegistro extends javax.swing.JFrame {
         System.out.println(r);
             for(int i = 0; i<jTable1.getRowCount(); i++){
                 for (int j=0; j<jTable1.getColumnCount(); j++)
-                //esta ejecutando por linea el numero de rows
-                    // si hay dos rows, ejecuta este for dos veces para cada row
                 {
                     c = (int) jTable1.getValueAt(i,5);
-                    
                     if (c==in){
-                   // fw.write(jTable1.getValueAt(i,j).toString()+" ");
                    pw.print(jTable1.getValueAt(i,j).toString()+" ");
-                   System.out.println("PRINTEANDO");
-                    
                     }
-                   
                 }
-                System.out.println("FIN LOOP COLUMNAS");
              bw.newLine();
             }
-            System.out.println("FIN LOOP ROWS");
             pw.close();
-        //    bw.close();
-        //    fw.close();
-            
-            
         } catch (IOException ex) {
             Logger.getLogger(PantallaRegistro.class.getName()).log(Level.SEVERE, null, ex);
         } 
         
     }
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-        //TableModel model1 = jTable1.getModel();
+   
      int o;   
      o = jTable1.getRowCount();
      if (o==0){
@@ -661,12 +652,13 @@ model.setRowCount(0);
 
     private void precioinputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_precioinputKeyTyped
         // TODO add your handling code here:
-        char c = evt.getKeyChar();
-        char ch = evt.getKeyChar();
-        if(!(Character.isDigit(c) || (c==KeyEvent.VK_BACK_SPACE) || c==KeyEvent.VK_DELETE) || c=='y')  {
-         evt.consume();
-    }
+        
+    
     }//GEN-LAST:event_precioinputKeyTyped
+
+    private void precioinputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_precioinputActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_precioinputActionPerformed
 
     /**
      * @param args the command line arguments

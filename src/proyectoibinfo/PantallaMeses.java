@@ -227,10 +227,9 @@ public class PantallaMeses extends javax.swing.JFrame {
            
             yt="diciembre";
         }
-          String filePath = "C:\\Users\\Carlos Manuel\\Documents\\NetBeansProjects\\HelpMe\\"+yt+".txt";
+          String filePath = "C:\\Users\\Carlos Manuel\\Documents\\NetBeansProjects\\HelpMe\\MESES\\"+yt+".txt";
           File file = new File(filePath);
           String line = null;
-          
           FileReader fr;
         try {
             fr = new FileReader(file);
@@ -240,7 +239,6 @@ public class PantallaMeses extends javax.swing.JFrame {
             Object[] lines = br.lines().toArray();
             
             for(int i= 0; i<lines.length; i++){
-               
                 String [] row = lines[i].toString().split(" ");
                 
                 
