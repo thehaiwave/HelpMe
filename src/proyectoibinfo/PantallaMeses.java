@@ -37,7 +37,7 @@ public class PantallaMeses extends javax.swing.JFrame {
     TableRowSorter trs;
     public PantallaMeses() {
         initComponents();
-         setSize(900,600);
+        setSize(900,600);
         this.setLocationRelativeTo(null);
         this.setTitle("                                                                      REGISTRO MENSUAL");
         setResizable(false);
@@ -48,7 +48,6 @@ public class PantallaMeses extends javax.swing.JFrame {
         Date d = new Date();
         SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy    hh:mm a");
         date.setText(s.format(d));
-        
     }
 
     /**
@@ -179,16 +178,10 @@ public class PantallaMeses extends javax.swing.JFrame {
 
     private void mesCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mesCBActionPerformed
         // TODO add your handling code here:
-        
         String query = mesCB.getSelectedItem().toString();
         String yt;
         DefaultTableModel modelo = (DefaultTableModel)jTable2.getModel();
         modelo.setRowCount(0);
-          
-        
-      
-       
-        
         
         if (query == "Enero"){
             yt="enero";
@@ -208,76 +201,60 @@ public class PantallaMeses extends javax.swing.JFrame {
           else if (query == "Junio"){
             yt="junio";
         }
-           else if (query == "Julio"){
+          else if (query == "Julio"){
             yt="julio";
         }
-            else if (query == "Agosto"){
+          else if (query == "Agosto"){
             yt="agosto";
         }
-             else if (query == "Septiembre"){
+          else if (query == "Septiembre"){
             yt="septiembre";
         }
-              else if (query == "Octubre"){
+          else if (query == "Octubre"){
             yt="octubre";
         }
-               else if (query == "Noviembre"){
+          else if (query == "Noviembre"){
             yt="noviembre";
         }
-        else {
+          else {
            
             yt="diciembre";
         }
           String filePath = "C:\\Users\\Carlos Manuel\\Documents\\NetBeansProjects\\HelpMe\\MESES\\"+yt+".txt";
           File file = new File(filePath);
-          String line = null;
           FileReader fr;
-        try {
-            fr = new FileReader(file);
-            BufferedReader br = new BufferedReader(fr);
-            
-            DefaultTableModel model = (DefaultTableModel)jTable2.getModel();
-            Object[] lines = br.lines().toArray();
-            
-            for(int i= 0; i<lines.length; i++){
-                String [] row = lines[i].toString().split(" ");
-                
-                
-                if (row.length>1){
-                    model.addRow(row);
-                }
-                
-              
-             //   System.out.println(row[1]);
-                
-            }
-            
-            
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(PantallaMeses.class.getName()).log(Level.SEVERE, null, ex);
-        } 
-        
-     
-          
-          
-         
-        
+                try {
+                    fr = new FileReader(file);
+                    BufferedReader br = new BufferedReader(fr);
+
+                    DefaultTableModel model = (DefaultTableModel)jTable2.getModel();
+                    Object[] lines = br.lines().toArray();
+
+                        for(int i= 0; i<lines.length; i++){
+                            String [] row = lines[i].toString().split(" ");
+                                if (row.length>1){
+                                    model.addRow(row);
+                                }
+                        }
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(PantallaMeses.class.getName()).log(Level.SEVERE, null, ex);
+          } 
     }//GEN-LAST:event_mesCBActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        
-         DefaultTableModel model = (DefaultTableModel)jTable2.getModel();
+        DefaultTableModel model = (DefaultTableModel)jTable2.getModel();
         int i= jTable2.getSelectedRow();
         
-        if (i>=0){
-           model.removeRow(i);
-        }
-        else {
-            JOptionPane.showMessageDialog(this, "Seleccione una fila para eliminar");
-        }
+            if (i>=0){
+                model.removeRow(i);
+            }
+                else {
+                    JOptionPane.showMessageDialog(this, "Seleccione una fila para eliminar");
+            }
     }//GEN-LAST:event_jButton1ActionPerformed
     private void writee (){
-         String query = mesCB.getSelectedItem().toString();
+        String query = mesCB.getSelectedItem().toString();
         String yt;
         
          if (query == "Enero"){
@@ -295,87 +272,66 @@ public class PantallaMeses extends javax.swing.JFrame {
          else if (query == "Mayo"){
             yt="mayo";
         }
-          else if (query == "Junio"){
+         else if (query == "Junio"){
             yt="junio";
         }
-           else if (query == "Julio"){
+         else if (query == "Julio"){
             yt="julio";
         }
-            else if (query == "Agosto"){
+         else if (query == "Agosto"){
             yt="agosto";
         }
-             else if (query == "Septiembre"){
+         else if (query == "Septiembre"){
             yt="septiembre";
         }
-              else if (query == "Octubre"){
+         else if (query == "Octubre"){
             yt="octubre";
         }
-               else if (query == "Noviembre"){
+         else if (query == "Noviembre"){
             yt="noviembre";
         }
-        else {
-           
+         else {
             yt="diciembre";
         }
         
-        int c;
+         int c;
          String filePath = "C:\\Users\\Carlos Manuel\\Documents\\NetBeansProjects\\HelpMe\\MESES\\"+yt+".txt";
-        File file = new File(filePath);
+         File file = new File(filePath);
         try {
             FileWriter fw = new FileWriter(file);
             BufferedWriter bw = new BufferedWriter(fw);
-            for(int i = 0; i<jTable2.getRowCount(); i++){
-                for (int j=0; j<jTable2.getColumnCount(); j++){
-                    
-                    
-                    
-                    bw.write(jTable2.getValueAt(i,j).toString()+" ");
-                    
-                   
+                for(int i = 0; i<jTable2.getRowCount(); i++){
+                        for (int j=0; j<jTable2.getColumnCount(); j++){
+                            bw.write(jTable2.getValueAt(i,j).toString()+" ");
+                        }
+                    bw.newLine();
                 }
-                bw.newLine();
-            }
-            
-            
-            
             bw.close();
             fw.close();
-            
-            
         } catch (IOException ex) {
             Logger.getLogger(PantallaRegistro.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
-        
-        
     }
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-          int o;   
+     int o;   
      o = jTable2.getRowCount();
-     if (o==0){
-         new Menu().setVisible(true);
-         this.dispose();
-     }
+        if (o==0){
+            new Menu().setVisible(true);
+            this.dispose();
+        }
      else {
-     
-    int selectedOption = JOptionPane.showConfirmDialog(null, 
+             int selectedOption = JOptionPane.showConfirmDialog(null, 
                                   "¿Estás seguro?", 
                                   "     REGRESAR", 
                                   JOptionPane.YES_NO_OPTION); 
               if (selectedOption == JOptionPane.YES_OPTION) {
-  int in;
-    
-        writee();
-        new Menu().setVisible(true);
-       this.dispose(); 
-    }
-              
-           
-    }
-     
-        
+                         int in;
+                         writee();
+                         new Menu().setVisible(true);
+                         this.dispose(); 
+              }
+          }  
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void txtFiltro2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFiltro2KeyTyped
@@ -402,7 +358,6 @@ public class PantallaMeses extends javax.swing.JFrame {
             ty=3;
         }
         else {
-           
             ty=4;
         }
                 trs.setRowFilter(RowFilter.regexFilter(txtFiltro2.getText(),ty));

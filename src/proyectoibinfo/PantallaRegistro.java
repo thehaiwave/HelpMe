@@ -5,14 +5,10 @@
  */
 package proyectoibinfo;
 
-import static java.awt.SystemColor.window;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -20,16 +16,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import javax.swing.text.MaskFormatter;
 
 /**
  *
@@ -43,28 +39,21 @@ public class PantallaRegistro extends javax.swing.JFrame {
     
     TableRowSorter trs;
     
-    public PantallaRegistro() {
+    public PantallaRegistro() throws ParseException {
         initComponents();
         setSize(900,600);
         this.setLocationRelativeTo(null);
         this.setTitle("                                                                           REGISTRO");
         setResizable(false);
         showDate();
-        jTable1.getColumnModel().getColumn(5).setMinWidth(0);
-        jTable1.getColumnModel().getColumn(5).setMaxWidth(0);
-        
-        
-       
+        jTableRegistro.getColumnModel().getColumn(5).setMinWidth(0);
+        jTableRegistro.getColumnModel().getColumn(5).setMaxWidth(0);
     }
-    
-
-    
     
     void showDate(){
         Date d = new Date();
         SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy    hh:mm a");
         date.setText(s.format(d));
-        
     }
 
     /**
@@ -84,11 +73,9 @@ public class PantallaRegistro extends javax.swing.JFrame {
         date = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTableRegistro = new javax.swing.JTable();
         Buscar = new javax.swing.JLabel();
         jtxtFiltro = new java.awt.TextField();
-        precioinput = new java.awt.TextField();
-        idinput = new java.awt.TextField();
         leyendainput = new java.awt.TextField();
         fechaininput = new com.toedter.calendar.JDateChooser();
         fechaoutinput = new com.toedter.calendar.JDateChooser();
@@ -98,13 +85,15 @@ public class PantallaRegistro extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         btnRegistrar = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        limpiaFields = new javax.swing.JButton();
-        filterCB = new javax.swing.JComboBox<>();
+        btnActualizar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
+        btnLimpiarCampos = new javax.swing.JButton();
+        cbFiltroCampos = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnRegresar = new javax.swing.JButton();
+        btnNuevo = new javax.swing.JButton();
+        idinput = new javax.swing.JFormattedTextField();
+        precioinput = new java.awt.TextField();
 
         jScrollPane2.setViewportView(jEditorPane1);
 
@@ -116,6 +105,11 @@ public class PantallaRegistro extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(66, 134, 244));
         jPanel1.setMaximumSize(new java.awt.Dimension(900, 600));
+        jPanel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel1MouseClicked(evt);
+            }
+        });
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         date.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
@@ -147,7 +141,7 @@ public class PantallaRegistro extends javax.swing.JFrame {
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTableRegistro.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -155,15 +149,15 @@ public class PantallaRegistro extends javax.swing.JFrame {
                 "Precio", "ID", "Leyenda", "Fecha In", "Fecha Out", "Title 6"
             }
         ));
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+        jTableRegistro.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable1MouseClicked(evt);
+                jTableRegistroMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jTable1MouseEntered(evt);
+                jTableRegistroMouseEntered(evt);
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(jTableRegistro);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 513, 370));
 
@@ -179,33 +173,17 @@ public class PantallaRegistro extends javax.swing.JFrame {
         });
         jPanel1.add(jtxtFiltro, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 80, 300, 28));
 
-        precioinput.setFont(new java.awt.Font("Dialog", 0, 21)); // NOI18N
-        precioinput.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                precioinputActionPerformed(evt);
-            }
-        });
-        precioinput.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                precioinputKeyTyped(evt);
-            }
-        });
-        jPanel1.add(precioinput, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 120, 163, -1));
-
-        idinput.setFont(new java.awt.Font("Dialog", 0, 21)); // NOI18N
-        jPanel1.add(idinput, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 180, 163, -1));
-
         leyendainput.setFont(new java.awt.Font("Dialog", 0, 21)); // NOI18N
         jPanel1.add(leyendainput, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 250, 163, 84));
 
         fechaininput.setFont(new java.awt.Font("Tahoma", 0, 21)); // NOI18N
         fechaininput.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
             public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
                 fechaininputAncestorAdded(evt);
             }
             public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
-            }
-            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
             }
         });
         jPanel1.add(fechaininput, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 360, 163, 32));
@@ -241,57 +219,80 @@ public class PantallaRegistro extends javax.swing.JFrame {
         });
         jPanel1.add(btnRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 490, -1, -1));
 
-        jButton2.setText("ACTUALIZAR");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnActualizar.setText("ACTUALIZAR");
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnActualizarActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 490, 150, -1));
+        jPanel1.add(btnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 490, 150, -1));
 
-        jButton3.setText("ELIMINAR");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnEliminar.setText("ELIMINAR");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnEliminarActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 490, 120, 30));
+        jPanel1.add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 490, 120, 30));
 
-        limpiaFields.setText("LIMPIAR");
-        limpiaFields.addActionListener(new java.awt.event.ActionListener() {
+        btnLimpiarCampos.setText("LIMPIAR");
+        btnLimpiarCampos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                limpiaFieldsActionPerformed(evt);
+                btnLimpiarCamposActionPerformed(evt);
             }
         });
-        jPanel1.add(limpiaFields, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 70, -1, -1));
+        jPanel1.add(btnLimpiarCampos, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 70, -1, -1));
 
-        filterCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Precio", "ID", "Leyenda", "Fecha In", "Fecha Out" }));
-        filterCB.addItemListener(new java.awt.event.ItemListener() {
+        cbFiltroCampos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Precio", "ID", "Leyenda", "Fecha In", "Fecha Out" }));
+        cbFiltroCampos.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                filterCBItemStateChanged(evt);
+                cbFiltroCamposItemStateChanged(evt);
             }
         });
-        jPanel1.add(filterCB, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 80, -1, -1));
+        jPanel1.add(cbFiltroCampos, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 80, -1, -1));
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 25)); // NOI18N
         jLabel7.setText("$");
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 120, -1, -1));
 
-        jButton4.setText("REGRESAR");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        btnRegresar.setText("REGRESAR");
+        btnRegresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btnRegresarActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 490, -1, -1));
+        jPanel1.add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 490, -1, -1));
 
-        jButton1.setText("NUEVO");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnNuevo.setText("NUEVO");
+        btnNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnNuevoActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 490, -1, -1));
+        jPanel1.add(btnNuevo, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 490, -1, -1));
+
+        try {
+
+            idinput = new JFormattedTextField(new MaskFormatter("AAAA-AAAA"));
+
+        } catch (java.text.ParseException e){
+            e.printStackTrace();
+        }
+        idinput.setFont(new java.awt.Font("Tahoma", 0, 21)); // NOI18N
+        idinput.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                idinputKeyTyped(evt);
+            }
+        });
+        jPanel1.add(idinput, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 180, 160, 30));
+
+        precioinput.setFont(new java.awt.Font("Dialog", 0, 21)); // NOI18N
+        precioinput.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                precioinputKeyTyped(evt);
+            }
+        });
+        jPanel1.add(precioinput, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 120, 160, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -308,74 +309,62 @@ public class PantallaRegistro extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
-        // TODO add your handling code here:
-        
-     DefaultTableModel modelo = (DefaultTableModel)jTable1.getModel();
+
+       DefaultTableModel modelo = (DefaultTableModel)jTableRegistro.getModel();
        Date r;
        Date t;
        Date v=fechaininput.getDate();
        Date u=fechaoutinput.getDate();
        Calendar cal_fechain;
        String g = null;
-       
-       
+       String k=(String) idinput.getValue();
        Object Dato[] = new Object [6];
-       
-      
-      
-                 Dato[0]  = precioinput.getText();
-                 Dato[1]  = idinput.getText();
-                 if (v==null){
-                     JOptionPane.showMessageDialog(this,"Por favor ingrese Fecha In");
-                 }
-                 else {
-                   SimpleDateFormat df = new SimpleDateFormat ("dd/MM/yyyy");
-                    Date q = fechaininput.getDate();
-                    r=q;
-                    LocalDate localDate = r.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                    int month = localDate.getMonthValue();
-                    String ns = df.format(q);
-                    Dato[3]  = ns;
-                 }
-                 cal_fechain = Calendar.getInstance();
-                   if (u==null){
+          Dato[0]  = precioinput.getText();
+           if (k==null) {
+                 JOptionPane.showMessageDialog(this,"Por favor ingrese una ID valida de 8 caracteres");
+           } else {
+                 Dato[1]  = idinput.getValue();
+           }
+          
+                if (v==null){
+                      JOptionPane.showMessageDialog(this,"Por favor ingrese Fecha In");
+                }
+                    else {
+                             SimpleDateFormat df = new SimpleDateFormat ("dd/MM/yyyy");
+                             Date q = fechaininput.getDate();
+                             r=q;
+                             LocalDate localDate = r.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                             int month = localDate.getMonthValue();
+                             String ns = df.format(q);
+                             Dato[3]  = ns;
+                }
                     
-                    g="EN_INVENTARIO";
-             
-                 Dato[4]  = g;
-                 }
+                cal_fechain = Calendar.getInstance();
+                if (u==null){
+                      g="EN_INVENTARIO";
+                      Dato[4]  = g;
+                }
                    else {
-                 SimpleDateFormat ff = new SimpleDateFormat("dd/MM/yyyy");
-                    Date fc=fechaoutinput.getDate();
-                    String fd= ff.format(fc);
-                    
-             
-                 Dato[4]  = fd;
-                   }
-                 Dato[2]  = leyendainput.getText();
-                 if(v != null){
+                            SimpleDateFormat ff = new SimpleDateFormat("dd/MM/yyyy");
+                            Date fc=fechaoutinput.getDate();
+                            String fd= ff.format(fc);
+                            Dato[4]  = fd;
+                }
+                   
+                Dato[2]  = leyendainput.getText();
+                if(v!= null && k!=null){
                      cal_fechain = fechaininput.getCalendar();
                      int mes_in = cal_fechain.get(Calendar.MONTH);
-                 
-                 Dato [5]= mes_in;
-                
-                  modelo.addRow(Dato);
-                 
-              
-                 } 
-                 
-              
-                
-                 
-                 
-                                          
+                     Dato [5]= mes_in;
+                     modelo.addRow(Dato);
+                }        
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         // TODO add your handling code here:
-       
-       int i = jTable1.getSelectedRow();
-       DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+       Calendar fecha_in;
+       int i = jTableRegistro.getSelectedRow();
+       DefaultTableModel model = (DefaultTableModel)jTableRegistro.getModel();
        if (i >=0)
        {
           Date r;
@@ -385,112 +374,111 @@ public class PantallaRegistro extends javax.swing.JFrame {
           model.setValueAt(precioinput.getText(),i,0);
           model.setValueAt(idinput.getText(),i,1);
           model.setValueAt(leyendainput.getText(),i,2);
-       if (v==null){
+                if (v==null){
                      fechaininput.setDate(null);
-                 }
-                 else {
-                   SimpleDateFormat df = new SimpleDateFormat ("dd/MM/yyyy");
-                    Date q = fechaininput.getDate();
-                    r=q;
-                    LocalDate localDate = r.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                    int month = localDate.getMonthValue();
-                    String ns = df.format(q);
-                    model.setValueAt(ns,i,3);
-                 }
-                   if (u==null){
+                }
+                    
+                             SimpleDateFormat df = new SimpleDateFormat ("dd/MM/yyyy");
+                             Date q = fechaininput.getDate();
+                             r=q;
+                             LocalDate localDate = r.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                             int month = localDate.getMonthValue();
+                             String ns = df.format(q);
+                             model.setValueAt(ns,i,3);
+                             fecha_in = Calendar.getInstance();
+                             fecha_in = fechaininput.getCalendar();
+                             int mes_in = fecha_in.get(Calendar.MONTH);
+                             model.setValueAt(mes_in,i,5);
+                
+                if (u==null){
                      fechaoutinput.setDate(null);
-                 }
-                   else {
-                 SimpleDateFormat ff = new SimpleDateFormat("dd/MM/yyyy");
-                    Date fc=fechaoutinput.getDate();
-                    String fd= ff.format(fc);
-                    
-                    
-             
-               model.setValueAt(fd,i,4);
-                   }
-       } else {
-           JOptionPane.showMessageDialog(this, "Seleccione una fila para actualizar");
-       }
+                }
+                    else {
+                            SimpleDateFormat ff = new SimpleDateFormat("dd/MM/yyyy");
+                            Date fc=fechaoutinput.getDate();
+                            String fd= ff.format(fc);
+                            model.setValueAt(fd,i,4);
+                }} 
+                    else {
+                        JOptionPane.showMessageDialog(this, "Seleccione una fila para actualizar");
+                }
        
        
-       
-    }//GEN-LAST:event_jButton2ActionPerformed
+       jTableRegistro.clearSelection();
+    }//GEN-LAST:event_btnActualizarActionPerformed
 
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+    private void jTableRegistroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableRegistroMouseClicked
         // TODO add your handling code here:
+        
+     
         Date date;
         Date f;
         String k;
-        int i = jTable1.getSelectedRow();
-        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+        int i = jTableRegistro.getSelectedRow();
+        DefaultTableModel model = (DefaultTableModel)jTableRegistro.getModel();
+        
         precioinput.setText(model.getValueAt(i,0).toString());
         idinput.setText(model.getValueAt(i,1).toString());
         leyendainput.setText(model.getValueAt(i,2).toString());
         
-        try {
-            
-            date = new SimpleDateFormat("dd/MM/yyyy").parse((String)jTable1.getValueAt(i,3));
-            fechaininput.setDate(date);
-        } catch (ParseException ex) {
-            Logger.getLogger(PantallaRegistro.class.getName()).log(Level.SEVERE, null, ex);
-        }
-       
-        try {
-             f = new SimpleDateFormat("dd/MM/yyyy").parse((String)jTable1.getValueAt(i,4));
-            if (f==null) {
-            fechaoutinput.setDate(null);
+            try {
+                date = new SimpleDateFormat("dd/MM/yyyy").parse((String)jTableRegistro.getValueAt(i,3));
+                fechaininput.setDate(date);
+                
+            } catch (ParseException ex) {
+                Logger.getLogger(PantallaRegistro.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
-            fechaoutinput.setDate(f);
-        } catch (ParseException ex) {
-            Logger.getLogger(PantallaRegistro.class.getName()).log(Level.SEVERE, null, ex);
-        }
-      
-        
-        
-    }//GEN-LAST:event_jTable1MouseClicked
 
-    private void limpiaFieldsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limpiaFieldsActionPerformed
+            try {
+                if ((jTableRegistro.getValueAt(i,4))!="EN_INVENTARIO") {
+                f = new SimpleDateFormat("dd/MM/yyyy").parse((String)jTableRegistro.getValueAt(i,4));
+                fechaoutinput.setDate(f);
+            }
+                else {
+                fechaoutinput.setDate(null);
+            }
+                
+            } catch (ParseException ex) {
+                Logger.getLogger(PantallaRegistro.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    }//GEN-LAST:event_jTableRegistroMouseClicked
+
+    private void btnLimpiarCamposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarCamposActionPerformed
         // TODO add your handling code here:
-        
-        
+        jTableRegistro.clearSelection();
         precioinput.setText(null);
-        idinput.setText(null);
+        idinput.setValue(null);
         leyendainput.setText(null);
         fechaininput.setDate(null);
         fechaoutinput.setDate(null);
-    }//GEN-LAST:event_limpiaFieldsActionPerformed
+        
+    }//GEN-LAST:event_btnLimpiarCamposActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
-        
-        
-        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
-        int i= jTable1.getSelectedRow();
-        
-        if (i>=0){
-           model.removeRow(i);
+         
+        DefaultTableModel model = (DefaultTableModel)jTableRegistro.getModel();
+        int i= jTableRegistro.getSelectedRow();
+        if (i>=0) {
+                model.removeRow(i);
         }
-        else {
-            JOptionPane.showMessageDialog(this, "Seleccione una fila para eliminar");
+            else {
+                JOptionPane.showMessageDialog(this, "Seleccione una fila para eliminar");
         }
-                 
         
-        
-    }//GEN-LAST:event_jButton3ActionPerformed
+        jTableRegistro.clearSelection();
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void jtxtFiltroKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxtFiltroKeyTyped
         // TODO add your handling code here:
-    
-        
-        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+        DefaultTableModel model = (DefaultTableModel)jTableRegistro.getModel();
         jtxtFiltro.addKeyListener(new KeyAdapter() {
             
             @Override
                public void keyReleased (KeyEvent ke){
                int ty;
-        String query = filterCB.getSelectedItem().toString();
+               
+        String query = cbFiltroCampos.getSelectedItem().toString();
         
         if (query == "Precio"){
             ty=0;
@@ -505,28 +493,21 @@ public class PantallaRegistro extends javax.swing.JFrame {
             ty=3;
         }
         else {
-           
             ty=4;
         }
                 trs.setRowFilter(RowFilter.regexFilter(jtxtFiltro.getText(),ty));
-            }
+        }
             
         });        
         
         trs = new TableRowSorter(model);
-        jTable1.setRowSorter(trs);
-        
-        
-        
+        jTableRegistro.setRowSorter(trs);
     }//GEN-LAST:event_jtxtFiltroKeyTyped
 
     
-    private void filterCBItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_filterCBItemStateChanged
+    private void cbFiltroCamposItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbFiltroCamposItemStateChanged
         // TODO add your handling code here:
-       
-        
-        
-    }//GEN-LAST:event_filterCBItemStateChanged
+    }//GEN-LAST:event_cbFiltroCamposItemStateChanged
     private void writte (int in){
         String mes = null;
         
@@ -575,90 +556,87 @@ public class PantallaRegistro extends javax.swing.JFrame {
         
         
         try {
-        FileWriter fw = new FileWriter(file, true);
-        BufferedWriter bw = new  BufferedWriter (fw);
-        PrintWriter pw = new PrintWriter(bw);
-        int r = jTable1.getRowCount();
+            FileWriter fw = new FileWriter(file, true);
+            BufferedWriter bw = new  BufferedWriter (fw);
+            PrintWriter pw = new PrintWriter(bw);
+            int r = jTableRegistro.getRowCount();
         
-        System.out.println(r);
-            for(int i = 0; i<jTable1.getRowCount(); i++){
-                for (int j=0; j<jTable1.getColumnCount(); j++)
+            for(int i = 0; i<jTableRegistro.getRowCount(); i++){
+                for (int j=0; j<jTableRegistro.getColumnCount(); j++)
                 {
-                    c = (int) jTable1.getValueAt(i,5);
+                    c = (int) jTableRegistro.getValueAt(i,5);
+                    
                     if (c==in){
-                   pw.print(jTable1.getValueAt(i,j).toString()+" ");
+                    pw.print(jTableRegistro.getValueAt(i,j).toString()+" ");
                     }
                 }
              bw.newLine();
             }
-            pw.close();
+             pw.close();
         } catch (IOException ex) {
             Logger.getLogger(PantallaRegistro.class.getName()).log(Level.SEVERE, null, ex);
         } 
         
     }
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
    
      int o;   
-     o = jTable1.getRowCount();
+     o = jTableRegistro.getRowCount();
      if (o==0){
          new Menu().setVisible(true);
          this.dispose();
      }
      else {
      
-    int selectedOption = JOptionPane.showConfirmDialog(null, 
+     int selectedOption = JOptionPane.showConfirmDialog(null, 
                                   "¿Estás seguro?", 
                                   "     REGRESAR", 
                                   JOptionPane.YES_NO_OPTION); 
               if (selectedOption == JOptionPane.YES_OPTION) {
-  int in;
-    for (int t=0; t<1; t++){
-        in = (int) jTable1.getValueAt(t, 5);
-        System.out.println("yayai");
-        writte(in);
-        
-    }
-    new Menu().setVisible(true);
-       this.dispose(); 
-              
-           
-    }
-     }
-        
-        
-        
-     
-        
-        
-            //new Menu().setVisible(true);
-            //this.setVisible(false);
-    }//GEN-LAST:event_jButton4ActionPerformed
+                     int in;
+                        for (int t=0; t<1; t++){
+                            in = (int) jTableRegistro.getValueAt(t, 5);
+                            writte(in);
+
+                }
+                            new Menu().setVisible(true);
+                            this.dispose(); 
+         }
+       }
+    }//GEN-LAST:event_btnRegresarActionPerformed
 
     private void fechaininputAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_fechaininputAncestorAdded
         // TODO add your handling code here:
     }//GEN-LAST:event_fechaininputAncestorAdded
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-model.setRowCount(0);
-    }//GEN-LAST:event_jButton1ActionPerformed
+        DefaultTableModel model = (DefaultTableModel) jTableRegistro.getModel();
+        model.setRowCount(0);
+    }//GEN-LAST:event_btnNuevoActionPerformed
 
-    private void jTable1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseEntered
+    private void jTableRegistroMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableRegistroMouseEntered
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTable1MouseEntered
+    }//GEN-LAST:event_jTableRegistroMouseEntered
+
+    private void idinputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_idinputKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_idinputKeyTyped
 
     private void precioinputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_precioinputKeyTyped
         // TODO add your handling code here:
-        
-    
+         if (!Character.isDigit(evt.getKeyChar()) && evt.getKeyChar()!='.'){
+            evt.consume();
+        }
+        if (evt.getKeyChar()=='.'&& precioinput.getText().contains(".")){
+            evt.consume();
+        }
     }//GEN-LAST:event_precioinputKeyTyped
 
-    private void precioinputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_precioinputActionPerformed
+    private void jPanel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_precioinputActionPerformed
+         
+    }//GEN-LAST:event_jPanel1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -669,6 +647,8 @@ model.setRowCount(0);
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
+        
+        
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -690,23 +670,28 @@ model.setRowCount(0);
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new PantallaRegistro().setVisible(true);
+                try {
+                    new PantallaRegistro().setVisible(true);
+                } catch (ParseException ex) {
+                    Logger.getLogger(PantallaRegistro.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Buscar;
+    private javax.swing.JButton btnActualizar;
+    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnLimpiarCampos;
+    private javax.swing.JButton btnNuevo;
     private javax.swing.JButton btnRegistrar;
+    private javax.swing.JButton btnRegresar;
+    private javax.swing.JComboBox<String> cbFiltroCampos;
     private javax.swing.JLabel date;
     private com.toedter.calendar.JDateChooser fechaininput;
     private com.toedter.calendar.JDateChooser fechaoutinput;
-    private javax.swing.JComboBox<String> filterCB;
-    private java.awt.TextField idinput;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JFormattedTextField idinput;
     private javax.swing.JEditorPane jEditorPane1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -720,10 +705,9 @@ model.setRowCount(0);
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTableRegistro;
     private java.awt.TextField jtxtFiltro;
     private java.awt.TextField leyendainput;
-    private javax.swing.JButton limpiaFields;
     private java.awt.TextField precioinput;
     // End of variables declaration//GEN-END:variables
 }
