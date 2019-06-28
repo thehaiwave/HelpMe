@@ -295,7 +295,7 @@ public class PantallaMeses extends javax.swing.JFrame {
         }
         
          int c;
-         String filePath = "C:\\Users\\Carlos Manuel\\Documents\\NetBeansProjects\\HelpMe\\MESES\\"+yt+".txt";
+         String filePath = "...\\HelpMe\\MESES\\"+yt+".txt";
          File file = new File(filePath);
         try {
             FileWriter fw = new FileWriter(file);
