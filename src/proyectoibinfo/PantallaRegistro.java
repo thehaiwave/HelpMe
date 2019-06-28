@@ -551,7 +551,7 @@ public class PantallaRegistro extends javax.swing.JFrame {
               
         }
         int c;
-        String filePath = "C:\\Users\\Carlos Manuel\\Documents\\NetBeansProjects\\HelpMe\\MESES\\"+mes+".txt";
+        String filePath = "...\\HelpMe\\MESES\\"+mes+".txt";
         File file = new File(filePath);
         
         
