@@ -220,7 +220,7 @@ public class PantallaMeses extends javax.swing.JFrame {
            
             yt="diciembre";
         }
-          String filePath = "C:\\Users\\Carlos Manuel\\Documents\\NetBeansProjects\\HelpMe\\MESES\\"+yt+".txt";
+          String filePath = "...\\HelpMe\\MESES\\"+yt+".txt";
           File file = new File(filePath);
           FileReader fr;
                 try {
