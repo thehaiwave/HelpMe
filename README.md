@@ -1,6 +1,6 @@
 # Super-Cobra-Jet-Inventory | CS HL Final Project ![version](https://img.shields.io/badge/version-1.0.1-yellow.svg) [![Maintenance](https://img.shields.io/badge/Maintained%3F-no-red.svg)](https://bitbucket.org/lbesson/ansi-colors)
 This inventory system was originally built as the final project for my High Level Computer Science IB course. It's mainly designed for product data entry and storage
-by using text files as a database.
+by using text files as a database. The commit messages aren't super professional because, being a final project, I wasn't originally planning on making it public. Also I was just starting to use Git.
 
 
 ## Installation
